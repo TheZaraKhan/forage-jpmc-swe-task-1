@@ -1,0 +1,131 @@
+From 3c25b3fe09bd572924b08313b73e921be8966e4d Mon Sep 17 00:00:00 2001
+From: Zara Khan <ZaraMustafa@ymail.com>
+Date: Tue, 23 Jan 2024 00:17:25 +0500
+Subject: [PATCH] task completed
+
+---
+ __pycache__/client3.cpython-39.pyc | Bin 0 -> 1101 bytes
+ client3.py                         |  33 ++++++++-------------------------
+ client_test.py                     |  11 +++++------
+ 3 files changed, 13 insertions(+), 31 deletions(-)
+ create mode 100644 __pycache__/client3.cpython-39.pyc
+
+diff --git a/__pycache__/client3.cpython-39.pyc b/__pycache__/client3.cpython-39.pyc
+new file mode 100644
+index 0000000000000000000000000000000000000000..a44213a4952bf324437c96ed3bdde3fbbdd438fd
+GIT binary patch
+literal 1101
+zcmYjQ&2LjV5Vzk~k~ZxY`jM@WR$e5uL?WcCJy2CFAW^gu5>)|lzydwF@g#lC%X_c3
+z10tlSti+AKAwBM8k9*)x@s$(zJ?&}7PFrEi_RPG=%x``(5i2W81lOl8f5Yd9kgrbp
+zel<{eghzkDOA<+Q!WS>))awBcWxyjD@>oVP{*&-TCbEWa4eGK!4Aei+fF+1$bVm2d
+z+lns(nKvOkS(&dwH2(qUoSu_&dQRtS?&a4q!mq<M^xfg>kihzkzKQq--{f1o1ueJ^
+z8}|wPC>yW=o3I6~ezZkql#<g5txHftpVln6u<c9wlC+n<A%1c&`T5wGYOmYP%bv)O
+zOKtXccXoHWr(;kb9%l0Qk7wDxl#m{ts}-Y!+>pn3^dr2c$ip@{qsB?WHj&{r=06L(
+z9$o3-G?<1hBI6t6ESgfMO{0E<Xp+f2cBo1@?g0~d&df2e0ziUf??gTZ%}mJ#P=FE!
+zJ(v_mRAp8eW@By2-q6-eS*1srv~i`f9xQaBhu;Fk*QPe^=cO?1*v6;h(tvVi+rS^B
+z3;zcCE=1)@`-`Y$eExgfeWgL^?nEdtJQhWFAM_AYb)Oz~o|S5VmVT+k06HhtsMpc&
+zp<^&o=htp8&!8~B-K{>@<^aq-B0hA8n;2I684K!k4R@2O6}0snqRZuEcRa%zC`_rO
+zI5|xjyhM(t^aerJ!pTkc2N;H=WF;&6%$Jf1CJK2WA2H=Rci^jO2fTLSaw#174~xqo
+zvvtJ!!o}M}O(%E}#2E!@)qhRXk;sZPo&56L(J0w1&4gjMk;uJU`VPa|{p-`9)SlFR
+zH1un4+vr4>g-sOVD@S~FtnxfNx~l-EO&gmmbRIu{_2k8COAkCRSBVQTf;6>JhTXF<
+z#u$L5sg1F(Qrp^Plp01UE5J0^n2|6xQXr&FeA_ioJTk57SdJe8<^IviHN-dG&re~#
+oqs7gET5xlJgd>{614pU;39mZE9Y(n84cx&RWnqN2H9T9v|FAw7ZU6uP
+
+literal 0
+HcmV?d00001
+
+diff --git a/client3.py b/client3.py
+index 3fc09b7..dfc0d75 100644
+--- a/client3.py
++++ b/client3.py
+@@ -1,23 +1,3 @@
+-################################################################################
+-#
+-#  Permission is hereby granted, free of charge, to any person obtaining a
+-#  copy of this software and associated documentation files (the "Software"),
+-#  to deal in the Software without restriction, including without limitation
+-#  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+-#  and/or sell copies of the Software, and to permit persons to whom the
+-#  Software is furnished to do so, subject to the following conditions:
+-#
+-#  The above copyright notice and this permission notice shall be included in
+-#  all copies or substantial portions of the Software.
+-#
+-#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+-#  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+-#  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+-#  DEALINGS IN THE SOFTWARE.
+-
+ import json
+ import random
+ import urllib.request
+@@ -31,18 +11,19 @@ N = 500
+ 
+ def getDataPoint(quote):
+     """ Produce all the needed values to generate a datapoint """
+-    """ ------------- Update this function ------------- """
+     stock = quote['stock']
+     bid_price = float(quote['top_bid']['price'])
+     ask_price = float(quote['top_ask']['price'])
+-    price = bid_price
++    price = (bid_price+ask_price) / 2
+     return stock, bid_price, ask_price, price
+ 
+ 
+ def getRatio(price_a, price_b):
+-    """ Get ratio of price_a and price_b """
+-    """ ------------- Update this function ------------- """
+-    return 1
++    """ Get ratio of price_a and price_b """ 
++    if (price_b == 0):
++        return 
++    
++    return price_a/price_b
+ 
+ 
+ # Main
+@@ -52,8 +33,10 @@ if __name__ == "__main__":
+         quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
+ 
+         """ ----------- Update to get the ratio --------------- """
++        prices = {}
+         for quote in quotes:
+             stock, bid_price, ask_price, price = getDataPoint(quote)
++            prices[stock] = price
+             print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
+ 
+         print("Ratio %s" % getRatio(price, price))
+diff --git a/client_test.py b/client_test.py
+index af2bf26..18e02bd 100644
+--- a/client_test.py
++++ b/client_test.py
+@@ -8,6 +8,8 @@ class ClientTest(unittest.TestCase):
+       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
+     ]
+     """ ------------ Add the assertion below ------------ """
++    for quote in quotes:
++       self.assertEqual(getDataPoint(quote), (quote['stock'] , quote['top_bid']['price'], quote['top_ask']['price'] ,(quote['top_bid']['price']+ quote['top_ask']['price'] )/2))
+ 
+   def test_getDataPoint_calculatePriceBidGreaterThanAsk(self):
+     quotes = [
+@@ -15,11 +17,8 @@ class ClientTest(unittest.TestCase):
+       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
+     ]
+     """ ------------ Add the assertion below ------------ """
+-
+-
+-  """ ------------ Add more unit tests ------------ """
+-
+-
++    for quote in quotes:
++       self.assertEqual(getDataPoint(quote), (quote['stock'] , quote['top_bid']['price'], quote['top_ask']['price'] ,(quote['top_bid']['price']+ quote['top_ask']['price'] )/2))
+ 
+ if __name__ == '__main__':
+-    unittest.main()
++  unittest.main()
+-- 
+2.15.0
+
